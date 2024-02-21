@@ -2,8 +2,12 @@ import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, Button, Image } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import React, { useState } from 'react';
+import {NavigationContainer, StackActions} from '@react-navigation/native';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
 
-export default function App() {
+const Stack = createNativeStackNavigator();
+
+function HomeScreen( { navigation } ){
   const [image, setImage] = useState(null);
 
   // Function to choose photo on phone
@@ -32,6 +36,16 @@ export default function App() {
       { image && <Image source={{ uri: image }} style={{ width:250, height: 250, resizeMode: 'cover' }} /> }
       <StatusBar style="auto" />
     </View>
+  );
+}
+
+export default function App() {
+  return (
+    <NavigationContainer>
+      <Stack.Navigator>
+        <Stack.Screen name='Home' component={ HomeScreen } options={{ title: 'Food Label Reader'}} />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 }
 
