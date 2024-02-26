@@ -31,7 +31,6 @@ function HomeScreen( { navigation } ){
 
   return (
     <View style={styles.container}>
-      <Text>Food Label Reader</Text>
       <Button title="Choose an Image" onPress={ pickImage }></Button>
       { image && <Image source={{ uri: image }} style={{ width:250, height: 250, resizeMode: 'cover' }} /> }
       <StatusBar style="auto" />
@@ -43,7 +42,7 @@ export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        <Stack.Screen name='Home' component={ HomeScreen } options={{ title: 'Food Label Reader'}} />
+        <Stack.Screen name='Home' component={ HomeScreen } options={{ title: 'Add New Photo'}} />
       </Stack.Navigator>
     </NavigationContainer>
   );
