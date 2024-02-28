@@ -8,9 +8,8 @@ import base64 from 'react-native-base64';
 
 const Stack = createNativeStackNavigator();
 const host = 'https://nscc-0304263-wordpress-photos.azurewebsites.net';
-const username = '';
-const password = ''; // api token
-
+const username = 'W0304263';
+const password = 'YaKZ 4vvb Zlkx tpMj uDQt zBIg'; // api token
 
 function HomeScreen( { navigation } ){
   const [image, setImage] = useState(null);
@@ -40,9 +39,11 @@ function HomeScreen( { navigation } ){
     const endPoint = host + '/wp-json/wp/v2/media';
     const fileName = image.split('/').pop();
     const formData = new FormData();
+    const fileType = image.type || 'image/jpeg';
 
     formData.append('file', { 
       uri: image,
+      type: fileType, // Android needs this
       name: fileName
     });
 
@@ -105,9 +106,7 @@ function HomeScreen( { navigation } ){
       setIsLoading(false);      
     }
   }
-
   
-
   return (
     <ScrollView>
       <View style={styles.container}>
