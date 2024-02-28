@@ -12,6 +12,41 @@ const username = 'W0304263';
 const password = 'YaKZ 4vvb Zlkx tpMj uDQt zBIg'; // api token
 
 function HomeScreen( { navigation } ){
+
+  const url = "https://nscc-0304263-wordpress-photos.azurewebsites.net/wp-json/wp/v2/posts?_fields=id,title,_links&_embed=author,wp:featuredmedia";
+
+  const [posts, setPosts] = useState([]);
+
+  const getPosts = async () => {
+    const result = await fetch(url);
+    const data = await result.json();
+    setPosts(data);
+  }
+
+  if(posts.length === 0) {
+    getPosts();
+  }
+
+  return (
+    <View style={styles.container}>
+      <Pressable style={ styles.button} onPress= { () => navigation.navigate('Create')} >
+        <Text style={ styles.buttonText }>Add New Photo</Text>
+      </Pressable>
+
+      <ScrollView style={ marginTop=25 }>
+        {posts.map(post => (
+          <View key={post.id} style={marginBottom=10}>
+            {post._embedded['wp:featuredmedia'] && <Image source={{ uri: host + post._embedded['wp:featuredmedia'][0].source_url }} style={{ width: 250, height: 250 }}></Image> }
+            <Text>{ post.title.rendered }</Text>
+          </View>
+        ))}
+      </ScrollView> 
+      
+    </View>
+  );
+}
+
+function CreateScreen({ navigation }){
   const [image, setImage] = useState(null);
   const [title, setTitle] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -97,7 +132,7 @@ function HomeScreen( { navigation } ){
       const response = await result.json();
 
       if(response.id) {
-        alert('Successfully created Post. ID: ' + response.id);        
+        navigation.navigate('Home');
       }
       else {
         alert('Opps, something went wrong.');
@@ -136,7 +171,8 @@ export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        <Stack.Screen name='Home' component={ HomeScreen } options={{ title: 'Add New Photo'}} />
+        <Stack.Screen name='Home' component={ HomeScreen } options={{ title: 'Resplash Mobile'}} />
+        <Stack.Screen name='Create' component={ CreateScreen } options={{ title: 'Add New Photo'}} />
       </Stack.Navigator>
     </NavigationContainer>
   );
@@ -146,7 +182,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-    marginTop: 50
+    marginTop: 25,
+    marginBottom: 10
     
   },
   input: {
